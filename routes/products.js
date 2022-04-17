@@ -104,19 +104,20 @@ router.get('/:product_id/update', async (req, res) => {
 router.post('/:product_id/update', async (req, res) => {
 
     //fetch all the categories
-    const allCategories = await (await Category.fetchAll()).invokeMap((category)=>{
-        return [category.get('id'), category.get('name')];
-    })
-
+    // const allCategories = await (await Category.fetchAll()).invokeMap((category)=>{
+    //     return [category.get('id'), category.get('name')];
+    // })
+ 
     // fetch the product that we want to update
     const product = await Product.where({
         'id': req.params.product_id
     }).fetch({
-        require: true
+        require: true,
+        withRelated:['tags']
     });
 
     // process the form
-    const productForm = createProductForm(allCategories);
+    const productForm = createProductForm();
     productForm.handle(req, {
         'success': async (form) => {
             let {tags, ...productData} = form.data

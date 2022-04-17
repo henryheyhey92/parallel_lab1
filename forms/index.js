@@ -3,6 +3,7 @@ const forms = require("forms");
 // create some shortcuts
 const fields = forms.fields;
 const validators = forms.validators;
+const widgets = forms.widgets;
 
 var bootstrapField = function (name, object) {
     if (!Array.isArray(object.widget.classes)) { object.widget.classes = []; }
@@ -24,7 +25,7 @@ var bootstrapField = function (name, object) {
     return '<div class="form-group">' + label + widget + error + '</div>';
 };
 
-const createProductForm = () => {
+const createProductForm = (categories, tags) => {
     return forms.create({
         'name': fields.string({
             required: true,
@@ -39,7 +40,7 @@ const createProductForm = () => {
             cssClasses: {
                 label: ['form-label']
             },
-            'validators':[validators.integer()]
+            'validators':[validators.integer(), validators.min(0)]
         }),
         'description': fields.string({
             required: true,
