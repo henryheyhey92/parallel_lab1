@@ -80,6 +80,7 @@ router.post('/create', async (req, res) => {
             if(tags) {
                 await product.tags().attach(tags.split(","));
             }
+            req.flash("success_messages", `New Product ${product.get('name')} has been created`)
             res.redirect('/products');
         },
         'error': async (form) => {
