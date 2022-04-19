@@ -7,6 +7,8 @@ const { Product, Category, Tag } = require('../models')
 // import in the Forms
 const { bootstrapField, createProductForm } = require('../forms');
 
+//import in the CheckIfAuthenticated middleware
+const {checkIfAuthenticated} = require('../middleware');
 
 async function getProductById(productId){
     // eqv of
@@ -45,7 +47,7 @@ router.get('/', async (req, res) => {
     })
 })
 
-router.get('/create', async (req, res) => {
+router.get('/create', checkIfAuthenticated, async (req, res) => {
 
     const allCategories = await Category.fetchAll().map((category)=>{
         return [category.get('id'), category.get('name')];
@@ -60,7 +62,7 @@ router.get('/create', async (req, res) => {
 })
 
 
-router.post('/create', async (req, res) => {
+router.post('/create', checkIfAuthenticated, async (req, res) => {
 
     const allCategories = await Category.fetchAll().map((category) => {
         return [category.get('id'), category.get('name')];
